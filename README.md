@@ -1,2 +1,2 @@
 # HBHETiming
-To adjust delay setting of HBHE
+To adjust delay setting of HCAL
