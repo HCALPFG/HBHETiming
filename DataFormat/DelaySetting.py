@@ -178,6 +178,6 @@ class DelaySetting(object):
 		return self.emap.getRBXCoords(ieta,iphi,depth)
 
 	def isCalibChannel(self,rbx,rm):
-		return (rm == self.HF_CalibRM_number) or ((rbx.startswith("HO") or rbx.startswith("HB") or rbx.startswith("HE")) and rm == self.CalibRM_number)
+		return (rbx.startswith("HF") and rm == self.HF_CalibRM_number) or ((rbx.startswith("HO") or rbx.startswith("HB") or rbx.startswith("HE")) and rm == self.CalibRM_number)
 
 	
