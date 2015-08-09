@@ -30,7 +30,7 @@ class XMLProducer(object):
 			for channelDatum in channelData:
 				ET.SubElement(brick,"Data",elements="1",encoding="dec",rm=str(channelDatum[1]),card=str(channelDatum[2]),qie=str(channelDatum[0])).text = str(int(channelDatum[3]))
 			tree = ET.ElementTree(brick)
-			xmlFile = open(outDirPath+RBX+"_DELAY.xml","w")
+			xmlFile = open(outDirPath+"delay/"+RBX+"_DELAY.xml","w")
 			xmlFile.write(minidom.parseString(ET.tostring(brick)).toprettyxml())
 			xmlFile.close()
 
