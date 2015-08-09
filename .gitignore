@@ -11,6 +11,7 @@
 *.swo
 *.swn
 *.swm
+*.swl
 *~
 *.root
 analysis/Core/AlphaTwirl
