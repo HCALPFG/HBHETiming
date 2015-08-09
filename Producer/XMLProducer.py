@@ -9,6 +9,7 @@ class XMLProducer(object):
 	def produce(self,delaySetting,brickCreationTag,brickCreationStamp,ttcrxTag,ttcrxFileName,outDirPath):
 		if not os.path.isdir(outDirPath):
 			os.mkdir(outDirPath,0755)
+			os.mkdir(outDirPath+"/delay",0755)
 
 		chDelaySetting,RBXDelaySetting = delaySetting.getAdjustSetting()
 
@@ -45,22 +46,5 @@ class XMLProducer(object):
 		ttcrxFile = open(outDirPath+ttcrxFileName,"w")
 		ttcrxFile.write(minidom.parseString(ET.tostring(ttcrx)).toprettyxml())
 		ttcrxFile.close()
-
-
-
-
-
-
-
-if __name__ == "__main__":
-	a = DelaySetting(brickDir(),TTCPath(),mapFile())
-	a.readDelayFromXML()
-	a.readDelayFromHisto(delaySettingFiles())
-	a.adjustTiming()
-	test = XMLProducer()
-	test.produce(a,"2015-june-1_HCAL_Delays","01-06-15","All30","TTcrx_DELAY.xml","/afs/cern.ch/work/k/klo/hcal/PromptAnalysis/HFPhaseScan/DelayByChannel/2015-june-1_Delays/5050/")
-
-		
-
 
 
