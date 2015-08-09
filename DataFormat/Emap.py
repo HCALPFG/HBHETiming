@@ -2,13 +2,14 @@ from copy import deepcopy
 
 class Emap(object):
 	"""Map for channels in HCAL"""
-	def __init__(self,mapFileName):
+	def __init__(self,mapFileName,subDetList):
 		self._file = open(mapFileName)
 
 		self.channel_EtaPhiCoord = {}
 		self.map = {}
 		self.inverse_map = {}
 		self.channel_RBXCoord = {}
+		self.subDetList = subDetList
 
 		for line in self._file:
 			if line[0] == "#": continue
@@ -21,13 +22,22 @@ class Emap(object):
 			qie = int(fieldList[12])
 			rm = int(fieldList[9])
 			cand = int(fieldList[11])
+
+			if rbx[:2] not in subDetList: continue
+
 			if subDet.endswith("P"):
 				self.channel_EtaPhiCoord[(ieta,iphi,depth)] = ""
-				self.map[(ieta,iphi,depth)] = (rbx,qie,rm,cand)
+				if (ieta,iphi,depth) not in self.map:
+					self.map[(ieta,iphi,depth)] = (rbx,qie,rm,cand)
+				else:
+					print "Channel Duplication!"
 				self.inverse_map[ (rbx,qie,rm,cand) ] = (ieta,iphi,depth)
 			elif subDet.endswith("M"):
 				self.channel_EtaPhiCoord[(ieta*-1,iphi,depth)] = ""
-				self.map[(ieta*-1,iphi,depth)] = (rbx,qie,rm,cand)
+				if (ieta*-1,iphi,depth) not in self.map:
+					self.map[(ieta*-1,iphi,depth)] = (rbx,qie,rm,cand)
+				else:
+					print "Channel Duplication!"
 				self.inverse_map[ (rbx,qie,rm,cand) ] = (ieta*-1,iphi,depth)
 
 			self.channel_RBXCoord[(rbx,qie,rm,cand)] = ""

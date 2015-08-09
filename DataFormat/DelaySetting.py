@@ -5,9 +5,10 @@ from xml.dom import minidom
 
 class DelaySetting(object):
 	"""a class to read DelaySetting from TH2 and XML"""
-	def __init__(self,mapFileName):
+	def __init__(self,mapFileName,subDetList):
 	
-		self.emap = Emap(mapFileName) 
+		self.subDetList = subDetList
+		self.emap = Emap(mapFileName,self.subDetList)
 
 		# Default Setting
 		self.CalibRM_number = 5
@@ -28,7 +29,7 @@ class DelaySetting(object):
 		brick_in_paths = [ rbxDir + "/" + p for p in os.listdir(rbxDir) if os.path.isfile(os.path.join(rbxDir,p)) and p.endswith(".xml") and not p.startswith(".") ]
 
 		for brickPath in brick_in_paths:
-			rbxName = brickPath.split("/")[-1][:5]
+			rbxName = brickPath.split("/")[-1].replace("_DELAY.xml","")
 			self.xmlFiles[rbxName] = minidom.parse(brickPath)
 			data = self.xmlFiles[rbxName].getElementsByTagName("Data")
 			for datum in data:
@@ -67,10 +68,16 @@ class DelaySetting(object):
 
 			# Loop over each RBX
 			for rbxName,RBXDelay in self.currentRBXSetting.iteritems():
+
 				successShift = False
 				
 				goodChannels = {(coord[1],coord[2],coord[3]):True for coord in self.currentChSetting if coord[0] == rbxName}
 				allDelayForOneRBX = {(coord[1],coord[2],coord[3]):delay for coord,delay in self.currentChSetting.iteritems() if coord[0] == rbxName}
+				if rbxName[:2] not in self.subDetList:
+					self.adjustRBXSetting[rbxName] = self.currentRBXSetting[rbxName]
+					for coord,delay in allDelayForOneRBX.iteritems():
+						self.adjustChSetting[(rbxName,coord[0],coord[1],coord[2])] = delay
+					continue
 
 				# Loop over each channel and check if there is out of bound
 				for channelCoord,currentDelay in allDelayForOneRBX.iteritems():
