@@ -22,13 +22,13 @@ class Emap(object):
 			rm = int(fieldList[9])
 			cand = int(fieldList[11])
 			if subDet.endswith("P"):
-				self.channel_EtaPhiCoord[(ieta,iphi,depth,subDet)] = ""
-				self.map[(ieta,iphi,depth,subDet)] = (rbx,qie,rm,cand)
-				self.inverse_map[ (rbx,qie,rm,cand) ] = (ieta,iphi,depth,subDet)
+				self.channel_EtaPhiCoord[(ieta,iphi,depth)] = ""
+				self.map[(ieta,iphi,depth)] = (rbx,qie,rm,cand)
+				self.inverse_map[ (rbx,qie,rm,cand) ] = (ieta,iphi,depth)
 			elif subDet.endswith("M"):
-				self.channel_EtaPhiCoord[(ieta*-1,iphi,depth,subDet)] = ""
-				self.map[(ieta*-1,iphi,depth,subDet)] = (rbx,qie,rm,cand)
-				self.inverse_map[ (rbx,qie,rm,cand) ] = (ieta*-1,iphi,depth,subDet)
+				self.channel_EtaPhiCoord[(ieta*-1,iphi,depth)] = ""
+				self.map[(ieta*-1,iphi,depth)] = (rbx,qie,rm,cand)
+				self.inverse_map[ (rbx,qie,rm,cand) ] = (ieta*-1,iphi,depth)
 
 			self.channel_RBXCoord[(rbx,qie,rm,cand)] = ""
 
@@ -38,9 +38,9 @@ class Emap(object):
 	def cleanUp(self):
 		self._file.close()
 
-	def getRBXCoords(self,ieta,iphi,depth,subDet):
-		if (ieta,iphi,depth,subDet) in self.map:
-			return self.map[(ieta,iphi,depth,subDet)]
+	def getRBXCoords(self,ieta,iphi,depth):
+		if (ieta,iphi,depth) in self.map:
+			return self.map[(ieta,iphi,depth)]
 		else:
 			raise RuntimeError,"Can't find (ieta,iphi,depth,subDet) in the emap for HCAL"
 
