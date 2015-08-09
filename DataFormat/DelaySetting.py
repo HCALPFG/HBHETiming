@@ -45,13 +45,18 @@ class DelaySetting(object):
 		for line in textFile:
 			if line[0] == "#": continue
 			fieldList = line.split()
-			ieta = int(fieldList[0])
+
+			# Default Input txt format, comment out because of different format for 20150809 textfile
+			#ieta = int(fieldList[0])
+			#iphi = int(fieldList[1])
+			#depth = int(fieldList[2])
+			#delay = float(fieldList[3])
+
+			ieta = int(fieldList[2])
 			iphi = int(fieldList[1])
-			depth = int(fieldList[2])
+			depth = int(fieldList[0])
 			delay = float(fieldList[3])
-			# print ieta,iphi,depth,subDet
-			# print self.getRBXCoords(ieta,iphi,depth,subDet)
-			# print delay,round(delay)
+
 			self.addSetting[self.getRBXCoords(ieta,iphi,depth)] = round(delay)
 
 
