@@ -9,6 +9,7 @@
 *.pyc
 *.swp
 *.swo
+*.swn
 *~
 *.root
 analysis/Core/AlphaTwirl
