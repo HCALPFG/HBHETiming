@@ -48,15 +48,16 @@ class DelaySetting(object):
 			fieldList = line.split()
 
 			# Default Input txt format, comment out because of different format for 20150809 textfile
-			#ieta = int(fieldList[0])
-			#iphi = int(fieldList[1])
-			#depth = int(fieldList[2])
-			#delay = float(fieldList[3])
-
-			ieta = int(fieldList[2])
+			ieta = int(fieldList[0])
 			iphi = int(fieldList[1])
-			depth = int(fieldList[0])
+			depth = int(fieldList[2])
 			delay = float(fieldList[3])
+
+			#print "Notice the adjustment file is read in a different way!"
+			#ieta = int(fieldList[2])
+			#iphi = int(fieldList[1])
+			#depth = int(fieldList[0])
+			#delay = float(fieldList[3])
 
 			self.addSetting[self.getRBXCoords(ieta,iphi,depth)] = round(delay)
 
