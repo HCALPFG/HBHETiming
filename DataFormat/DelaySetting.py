@@ -26,7 +26,7 @@ class DelaySetting(object):
 		self.currentChSetting = {}
 		self.xmlFiles = {}
 
-		brick_in_paths = [ rbxDir + "/" + p for p in os.listdir(rbxDir) if os.path.isfile(os.path.join(rbxDir,p)) and p.endswith(".xml") and not p.startswith(".") ]
+		brick_in_paths = [ rbxDir + "/" + p for p in os.listdir(rbxDir) if os.path.isfile(os.path.join(rbxDir,p)) and p.endswith(".xml") and not p.startswith(".") and p[:2] in self.subDetList ]
 
 		for brickPath in brick_in_paths:
 			rbxName = brickPath.split("/")[-1].replace("_DELAY.xml","")
@@ -48,10 +48,10 @@ class DelaySetting(object):
 			fieldList = line.split()
 
 			# Default Input txt format, comment out because of different format for 20150809 textfile
-			ieta = int(fieldList[0])
-			iphi = int(fieldList[1])
-			depth = int(fieldList[2])
-			delay = float(fieldList[3])
+			#ieta = int(fieldList[0])
+			#iphi = int(fieldList[1])
+			#depth = int(fieldList[2])
+			#delay = float(fieldList[3])
 
 			#print "Notice the adjustment file is read in a different way!"
 			#ieta = int(fieldList[2])
@@ -59,8 +59,16 @@ class DelaySetting(object):
 			#depth = int(fieldList[0])
 			#delay = float(fieldList[3])
 
-			self.addSetting[self.getRBXCoords(ieta,iphi,depth)] = round(delay)
+			#self.addSetting[self.getRBXCoords(ieta,iphi,depth)] = round(delay)
+			
+			# Adopting to Andrew's convention
+			hfList = fieldList[1].split("_")
+			ieta = int(hfList[1])
+			iphi = int(hfList[2])
+			depth = int(hfList[3])
+			delay = int(fieldList[-1])
 
+			self.addSetting[self.getRBXCoords(ieta,iphi,depth)] = delay
 
 	def adjustTiming(self):
 		if hasattr(self,"currentRBXSetting") and hasattr(self,"currentChSetting") and hasattr(self,"addSetting"):
